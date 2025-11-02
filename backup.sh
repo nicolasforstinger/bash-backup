@@ -1,6 +1,13 @@
 #!/bin/bash
 # backup.sh - A simple backup creation script
 
+set -e
+
+if ! command -v tar &> /dev/null; then
+    echo "✗ tar is not installed" >&2
+    exit 1
+fi
+
 BACKUP_DIR=$1
 BACKUP_PATH=$2
 KEEP_COUNT=$3
@@ -13,7 +20,7 @@ if [ -z "$BACKUP_DIR" ] || [ -z "$BACKUP_PATH" ] || [ -z "$KEEP_COUNT" ]; then
 fi
 
 if [ ! -d "$BACKUP_DIR" ]; then
-    echo "Error: Source directory $BACKUP_DIR does not exist!"
+    echo "✗ Source directory $BACKUP_DIR does not exist!"  >&2
     exit 1
 fi
 
@@ -49,7 +56,7 @@ if [ $? -eq 0 ]; then
     fi
     
 else
-    echo "✗ Backup failed!"
+    echo "✗ Backup failed!" >&2
     exit 1
 fi
 
